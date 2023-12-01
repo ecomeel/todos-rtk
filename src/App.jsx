@@ -8,15 +8,30 @@ function App() {
     const addTodo = () => {
         if (text.trim().length) {
             setTodos([
-              ...todos,
-              {
-                id: new Date().toISOString(),
-                text,
-                completed: false
-              }
+                ...todos,
+                {
+                    id: new Date().toISOString(),
+                    text,
+                    completed: false,
+                },
             ]);
-            setText('');
+            setText("");
         }
+    };
+
+    const removeTodo = (todoId) => {
+        setTodos(todos.filter((todo) => todo.id != todoId));
+    };
+
+    const toggleTodoComplete = (todoId) => {
+      setTodos(todos.map(todo => {
+        if (todo.id != todoId) return todo
+        
+        return {
+          ...todo,
+          completed: !todo.completed
+        }
+      }))
     };
 
     return (
@@ -30,13 +45,22 @@ function App() {
                 <button onClick={addTodo}>Add todo</button>
             </label>
             <ul>
-              {
-                todos.map(todo => <li key={todo.id}>
-                  <input type="checkbox"/>
-                  <span>{todo.text}</span>
-                  <span style={{color: 'red'}}>&times;</span>
-                </li> )
-              }
+                {todos.map((todo) => (
+                    <li key={todo.id}>
+                        <input
+                            type="checkbox"
+                            checked={todo.completed}
+                            onChange={() => toggleTodoComplete(todo.id)}
+                        />
+                        <span>{todo.text}</span>
+                        <span
+                            className="deleteBtn"
+                            onClick={() => removeTodo(todo.id)}
+                        >
+                            &times;
+                        </span>
+                    </li>
+                ))}
             </ul>
         </div>
     );
