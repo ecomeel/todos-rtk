@@ -1,5 +1,5 @@
 import { useState, useEffect } from "react";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 
 import "./App.css";
 import TodoList from "./components/TodoList";
@@ -9,6 +9,7 @@ import { addTodo, fetchTodos} from "./todoSlice";
 
 function App() {
     const [title, setTitle] = useState("");
+    const {status, error} = useSelector(state => state.todos)
     const dispatch = useDispatch();
 
     const pushTodo = () => {
@@ -19,7 +20,7 @@ function App() {
     useEffect(() => {
       dispatch(fetchTodos())
     }, [])
-    
+
     return (
         <div className="App">
             <InputField
@@ -27,6 +28,8 @@ function App() {
                 handleInput={setTitle}
                 handleSubmit={pushTodo}
             />
+            {status === 'loading' && <h2>Loading</h2>}
+            {error && <h2>An error occured: {error}</h2>}
             <TodoList />
         </div>
     );

@@ -2,14 +2,20 @@ import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
 
 export const fetchTodos = createAsyncThunk(
     "todos/fetchTodos",
-    async function () {
-        const response = await fetch(
-            "https://jsonplaceholder.typicode.com/todos?_limit=10"
-        );
+    async function (_, { rejectWithValue }) {
+        try {
+            const response = await fetch(
+                "https://jsonplaceholder.typicode.com/todos?_limit=10"
+            );
+            if (!response.ok) {
+                throw new Error("Server Error");
+            }
+            const data = response.json();
 
-        const data = response.json();
-
-        return data;
+            return data;
+        } catch (error) {
+            return rejectWithValue(error.message);
+        }
     }
 );
 
@@ -18,7 +24,7 @@ const todosSlice = createSlice({
     initialState: {
         todos: [],
         status: null,
-        error: null
+        error: null,
     },
     reducers: {
         addTodo: (state, action) => {
@@ -37,19 +43,20 @@ const todosSlice = createSlice({
             const toggledTodo = state.todos.find(
                 (todo) => todo.id === action.payload.id
             );
-            toggledTodo.complete = !toggledTodo.complete;
+            toggledTodo.completed = !toggledTodo.completed;
         },
     },
     extraReducers: {
         [fetchTodos.pending]: (state, action) => {
-            state.status = 'loading';
-            state.error = null
+            state.status = "loading";
+            state.error = null;
         },
         [fetchTodos.fulfilled]: (state, action) => {
-            state.status = 'resolve',
-            state.todos = action.payload
+            (state.status = "resolve"), (state.todos = action.payload);
         },
-        [fetchTodos.rejected]: (state, action) => {},
+        [fetchTodos.rejected]: (state, action) => {
+            (state.status = "rejected"), (state.error = action.payload);
+        },
     },
 });
 
