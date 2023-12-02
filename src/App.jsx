@@ -1,41 +1,47 @@
 import { useState } from "react";
+import { useSelector } from "react-redux";
+
 
 import "./App.css";
 import TodoList from "./components/TodoList";
 import InputField from "./components/InputField";
 
+import { selectTodos } from "./selectors";
+import { pushTodo, deleteTodo, toggleComplete } from "./actions";
+
+
 function App() {
-    const [todos, setTodos] = useState([]);
+  const todos = useSelector(selectTodos)
     const [text, setText] = useState("");
 
     const addTodo = () => {
         if (text.trim().length) {
-            setTodos([
-                ...todos,
-                {
-                    id: new Date().toISOString(),
-                    text,
-                    completed: false,
-                },
-            ]);
+            pushTodo(text)
             setText("");
         }
     };
 
 
     const removeTodo = (todoId) => {
-        setTodos(todos.filter((todo) => todo.id != todoId));
+        // setTodos(todos.filter((todo) => todo.id != todoId));
+        deleteTodo(todoId)
     };
 
     const toggleTodoComplete = (todoId) => {
-      setTodos(todos.map(todo => {
-        if (todo.id != todoId) return todo
+      // setTodos(todos.map(todo => {
+      //   if (todo.id != todoId) return todo
         
-        return {
-          ...todo,
-          completed: !todo.completed
+      //   return {
+      //     ...todo,
+      //     completed: !todo.completed
+      //   }
+      // }))
+      todos.forEach(todo => {
+        if (todo.id == todoId) {
+          toggleComplete(todoId)
         }
-      }))
+      });
+
     };
 
     return (

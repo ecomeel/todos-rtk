@@ -1,18 +1,24 @@
-export function addTodo(todo) {
+export function push(text) {
     return {
         type: 'todo/addTodo',
-        payload: todo
+        payload: {
+            id: new Date().toISOString(),
+            text,
+            completed: false
+        }
     }
 }
 
-export function deleteTodo() {
+export function deleteTodo(idTodo) {
     return {
-        type: 'todo/deleteTodo'
+        type: 'todo/deleteTodo',
+        payload: idTodo
     }
 }
 
-export function toggleTodoComplete() {
+export function toggleTodoComplete(idTodo) {
     return {
-        type: 'todo/toggleComplete'
+        type: 'todo/toggleComplete',
+        payload: idTodo
     }
 }
