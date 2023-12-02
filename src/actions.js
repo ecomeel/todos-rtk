@@ -1,6 +1,6 @@
-export function push(text) {
+export function pushTodo(text) {
     return {
-        type: 'todo/addTodo',
+        type: 'todos/addTodo',
         payload: {
             id: new Date().toISOString(),
             text,
@@ -11,14 +11,14 @@ export function push(text) {
 
 export function deleteTodo(idTodo) {
     return {
-        type: 'todo/deleteTodo',
+        type: 'todos/deleteTodo',
         payload: idTodo
     }
 }
 
-export function toggleTodoComplete(idTodo) {
+export function toggleComplete(idTodo) {
     return {
-        type: 'todo/toggleComplete',
+        type: 'todos/toggleComplete',
         payload: idTodo
     }
 }

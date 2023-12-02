@@ -1,15 +1,17 @@
-const initialState = [];
+const initialState = {
+    todos: [],
+};
 
-export default function reducerTodo(state = initialState, action) {
+export default function todoReducer(state = initialState, action) {
     switch (action.type) {
-        case addTodo:
-            return [...state, action.payload];
-            
-        case deleteTodo:
+        case "todos/addTodo":
+            return { ...state, todos: [...state.todos, action.payload] };
+
+        case "todos/deleteTodo":
             return state.filter((todo) => todo.id != action.payload);
 
-        case toggleTodoComplete:
-            state.forEach((todo) => {
+        case "todos/toggleComplete":
+            state.todos.forEach((todo) => {
                 if (todo.id == id) {
                     todo.complete = !todo.complete;
                 }
