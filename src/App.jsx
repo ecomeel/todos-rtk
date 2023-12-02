@@ -1,15 +1,14 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { useDispatch } from "react-redux";
 
 import "./App.css";
 import TodoList from "./components/TodoList";
 import InputField from "./components/InputField";
 
-import { addTodo} from "./todoSlice";
+import { addTodo, fetchTodos} from "./todoSlice";
 
 function App() {
-    const [text, setText] = useState("");
-
+    const [title, setTitle] = useState("");
     const dispatch = useDispatch();
 
     const pushTodo = () => {
@@ -17,14 +16,15 @@ function App() {
       setText('')
     }
 
-    const toggleTodoComplete = (todoId) => {
-    };
-
+    useEffect(() => {
+      dispatch(fetchTodos())
+    }, [])
+    
     return (
         <div className="App">
             <InputField
-                text={text}
-                handleInput={setText}
+                title={title}
+                handleInput={setTitle}
                 handleSubmit={pushTodo}
             />
             <TodoList />
