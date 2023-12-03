@@ -5,7 +5,7 @@ import "./App.css";
 import TodoList from "./components/TodoList";
 import InputField from "./components/InputField";
 
-import { addTodo, fetchTodos} from "./todoSlice";
+import { addNewTodo, fetchTodos} from "./todoSlice";
 
 function App() {
     const [title, setTitle] = useState("");
@@ -13,8 +13,8 @@ function App() {
     const dispatch = useDispatch();
 
     const pushTodo = () => {
-      dispatch(addTodo({text}));
-      setText('')
+      dispatch(addNewTodo(title));
+      setTitle('')
     }
 
     useEffect(() => {
